@@ -1,0 +1,27 @@
+.home-link{
+    position: relative;
+    cursor: pointer;
+}
+.navbar-bg{
+    background-color: rgba(172, 228, 245, 0.17);
+}
+/* .home-link::after{
+    position: absolute;
+    bottom: -4px;
+    left: 0px;
+    content: '';
+    height: 7px;
+    border-radius: 20px;
+    background-color: rgb(44, 173, 216);
+    transition: ease-in-out 2ms;
+}
+*/
+.home-link:hover{
+    background-color:rgba(4, 1, 15, 0.071);
+    /* padding: 6px 10px; */
+    border-radius: 10px;
+}
+/* .home-link:hover:after{
+    width: 100%;
+    background-color: rgb(235, 168, 32);
+} */

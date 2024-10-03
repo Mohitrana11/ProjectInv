@@ -1,0 +1,19 @@
+.createEmp{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    background-image:  url('../../assets/otherImage.avif');
+    background-size: 100% ;
+    background-repeat: no-repeat ;
+    background-attachment:fixed ;
+    background-position: 20px;
+}
+.updateEmp{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    background-image:  url('../../assets/otherImage.avif');
+    background-size: 100% ;
+    background-repeat: no-repeat ;
+    background-attachment:fixed ;
+    background-position: 20px;
+}
+.inputBox{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
