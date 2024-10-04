@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import './navbar.css';
 import { IoExitOutline } from "react-icons/io5";
 import { FaUserAlt } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
-import { Link } from "react-router-dom";
- 
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from 'react-hot-toast';
 function Navbar() {
 
   const [sticky, setSticky] = useState(false);
@@ -23,7 +23,19 @@ function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const navigate = useNavigate();
+  const handleLogout = async ()=>{
+    try{
+      const response = await axios.post('/api/v1/logout');
+      const data = response.data
+      toast.success(data?.message)
+      localStorage.removeItem('myUser');
+      navigate('/')
+    }catch(err){
+      toast.error(err.response?.data?.message || 'Something went wrong');
+    }
 
+  }
 
   return (
     // {sticky?'fixed top-0 left-0 px-4 md:px-10  navbar w-full h-[70px] bg-black ':'fixed top-0 left-0 px-4 md:px-10  navbar w-full h-[70px] '}
@@ -32,7 +44,6 @@ function Navbar() {
         <div className="navbar-start">
           <a className=" text-xl font-bold cursor-pointer">Logo</a>
         </div>
-      
         <div className="navbar-end">
         <div className=" hidden lg:flex mr-10">
           <ul className="flex flex-row px-1">
@@ -41,7 +52,6 @@ function Navbar() {
             </li>
             <li className="text-lg font-semibold ml-4">
             <Link to={'/employees/list'} className='home-link flex items-center gap-2 py-[6px] px-[10px]'><FaUserFriends className="text-2xl" />Employee</Link>
-            
             </li>
           </ul>
         </div>
@@ -62,9 +72,9 @@ function Navbar() {
             
           </a>
         </li>
-        <li className="lg:hidden "><a className=" text-[17px] "><IoHome />Home</a></li>
-        <li className="  lg:hidden"><a className="text-[17px]"><FaUserFriends />Employee</a></li>
-        <li><a className="text-[17px]">  <IoExitOutline />Logout</a></li>
+        <li className="lg:hidden "><Link to={'/home'} className=" text-[17px] "><IoHome />Home</Link></li>
+        <li className="  lg:hidden"><Link  to={'/employees/list'} className="text-[17px]"><FaUserFriends />Employee</Link></li>
+        <li onClick={handleLogout}><a className="text-[17px]">  <IoExitOutline />Logout</a></li>
       </ul>
     </div>
   {/* </div> */}

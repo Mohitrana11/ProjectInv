@@ -1,27 +1,39 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import  register from '../../assets/EmployeeImage.webp'
 import './user.css'
-function Register() {
+import axios from "axios";
+import toast from "react-hot-toast";
+function Register(){
   const [userInput, setUserInput] = useState({});
-  // const [userGender, setUserGender] = useState('');
+
+
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
       setUserInput({
         ...userInput,
         [e.target.name]: e.target.value
       });
-
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    
+    try{
+      console.log('working');
+      const response =await axios.post('/api/v1/register',userInput);
+      const data = response.data;
+      toast.success(data?.message)
+      navigate('/home');
+      localStorage.setItem('myUser',JSON.stringify(data));
+    }catch(err){
+      toast.success(err.response?.data?.message);
+    }finally{
       setLoading(false);
-      alert("Form submitted!");
-    }, 1000); // Simulate form submission
+    }
   };
 
   return (

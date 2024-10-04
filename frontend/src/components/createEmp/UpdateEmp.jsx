@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from '../navbar/Navbar';
 import './emp.css';
-
+import { useAuths } from '../../context/authContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 const UpdateEmp = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -13,13 +16,7 @@ const UpdateEmp = () => {
     image: null,
   });
 
-  const [imagePreview, setImagePreview] = useState(null); // For image preview
-
-  useEffect(() => {
-    // If you want to fetch the current employee's data for update
-    // fetchEmployeeData();
-  }, []);
-
+  const [imagePreview, setImagePreview] = useState(null);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'checkbox') {
@@ -42,9 +39,18 @@ const UpdateEmp = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const {userIds} = useAuths();
+  console.log(userIds)
+  const navigate = useNavigate();
+  const handleSubmit =async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try{
+      const response  = await axios.put(`/api/v1/employees/${userIds}`,formData);
+      console.log(response.data);
+      navigate('/employees/list');
+    }catch(err){
+      toast.error(err.response?.data?.message || 'Something went wrong');
+    }
     // Logic for updating employee details
   };
 

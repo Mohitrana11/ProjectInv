@@ -1,11 +1,14 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {  useState } from "react";
 import './user.css'
 import login  from '../../assets/EmployeeImage.webp'
+import axios from 'axios';
+import toast from 'react-hot-toast';
 function Login() {
   const [userInput, setUserInput] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
   const handleInput = (e) => {
     setUserInput({
       ...userInput,
@@ -13,15 +16,26 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async  (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate form submission
-    setTimeout(() => {
+    try{
+      console.log('working');
+      const response =await axios.post('/api/v1/login',userInput);
+      const data = response.data;
+      toast.success(data?.message)
+      navigate('/home');
+      localStorage.setItem('myUser',JSON.stringify(data));
+    }catch(err){
+      toast.error(err.response?.data?.message || 'Something went wrong');
+    }finally{
       setLoading(false);
-      alert("Form submitted!");
-    }, 1000);
+    }
   };
+
+
+  // useEffect(()=>{},[]);
+
 
   return (
     <div className=" w-full h-screen bg-gray-100 flex items-center  justify-center px-4 py-4  overflow-hidden">
@@ -65,7 +79,7 @@ function Login() {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            {loading ? "Loading..." : "Login"}
+            {loading?'Loading...':'Login'}
           </button>
         </form>
         <div className="mt-6 text-center">

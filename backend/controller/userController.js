@@ -1,7 +1,7 @@
 
 const User = require('../module/userModule');
 const catchAsyncErrors =require('../middleware/catchAsyncErrors');
-
+const ErrorHandler  = require('../utils/errorHandler');
 
 const register = catchAsyncErrors(async (req,res,next)=>{
     const {email, username, password, avatar} = req.body;
@@ -29,6 +29,7 @@ const login = catchAsyncErrors(async (req,res,next)=>{
     const user = await User.findOne({email}).select('+password');
     if(!user){
         return next(new ErrorHandler('Email not found!',400));
+        // throw new Exception('Email not found!');
     }
     const passwords =await  user.comparePassword(password);
     if(!passwords){
